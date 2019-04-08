@@ -10,12 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
 public class MangerController {
     @Reference
     MangerService mangerService;
+
     @RequestMapping("index.do")
     public String index(){
         return "index";
@@ -51,5 +53,17 @@ public class MangerController {
     public List<BaseAttrInfo> getAttrList(String catalog3Id){
         List<BaseAttrInfo> attrInfo = mangerService.getAttrInfo(catalog3Id);
         return attrInfo;
+    }
+    @RequestMapping("saveAttr")
+    @ResponseBody
+    public String saveAttr(BaseAttrInfo attrInfo){
+        mangerService.saveAttr(attrInfo);
+        return "操作成功";
+    }
+    @RequestMapping("deleteAttr.do")
+    @ResponseBody
+    public int deleteAttr(String attrId){
+        int num = mangerService.deleteAttr(attrId);
+        return num;
     }
 }

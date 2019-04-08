@@ -1,12 +1,12 @@
 package com.neusoft.bean.po;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Table(name = "base_attr_info")
 public class BaseAttrInfo implements Serializable {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /**
      * 编号
      */
@@ -31,6 +31,8 @@ public class BaseAttrInfo implements Serializable {
     @Column(name = "is_enabled")
     private String isEnabled;
 
+    @Transient
+    private List<BaseAttrValue> attrValueList;
 
 
     public BaseAttrInfo() {
@@ -115,6 +117,14 @@ public class BaseAttrInfo implements Serializable {
         this.isEnabled = isEnabled == null ? null : isEnabled.trim();
     }
 
+    public List<BaseAttrValue> getAttrValueList() {
+        return attrValueList;
+    }
+
+    public void setAttrValueList(List<BaseAttrValue> attrValueList) {
+        this.attrValueList = attrValueList;
+    }
+
     @Override
     public String toString() {
         return "BaseAttrInfo{" +
@@ -122,6 +132,7 @@ public class BaseAttrInfo implements Serializable {
                 ", attrName='" + attrName + '\'' +
                 ", catalog3Id=" + catalog3Id +
                 ", isEnabled='" + isEnabled + '\'' +
+                ", attrValueList=" + attrValueList +
                 '}';
     }
 }

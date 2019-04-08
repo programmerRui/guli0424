@@ -1,15 +1,9 @@
 package com.neusoft.mangerservice.margerserviceimpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.neusoft.bean.po.BaseAttrInfo;
-import com.neusoft.bean.po.BaseCatalog1;
-import com.neusoft.bean.po.BaseCatalog2;
-import com.neusoft.bean.po.BaseCatalog3;
+import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.MangerService;
-import com.neusoft.mangerservice.dao.BaseAttrInfoMapper;
-import com.neusoft.mangerservice.dao.BaseCatalog1Mapper;
-import com.neusoft.mangerservice.dao.BaseCatalog2Mapper;
-import com.neusoft.mangerservice.dao.BaseCatalog3Mapper;
+import com.neusoft.mangerservice.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -24,6 +18,8 @@ public class MangerServiceImpl implements MangerService {
     BaseCatalog2Mapper baseCatalog2Mapper;
     @Autowired
     BaseCatalog3Mapper baseCatalog3Mapper;
+    @Autowired
+    BaseAttrValueMapper baseAttrValueMapper;
     @Override
     public List<BaseCatalog1> getCatalog1() {
         return baseCatalog1Mapper.selectAll();
@@ -49,4 +45,52 @@ public class MangerServiceImpl implements MangerService {
         baseAttrInfo.setCatalog3Id(Long.parseLong(catalog3Id));
         return baseAttrInfoMapper.select(baseAttrInfo);
     }
+
+    @Override
+    public void saveAttr(BaseAttrInfo baseAttrInfo) {
+        //如果有主键就进行更新，没有就插入
+        if(baseAttrInfo.getId()!=null&&baseAttrInfo.getId().toString().length()>0){
+            baseAttrInfoMapper.updateByPrimaryKey(baseAttrInfo);
+        }else{
+            //防止主键被赋上一个空字符串
+            if(baseAttrInfo.getId()==null||baseAttrInfo.getId().toString().length()==0){
+                baseAttrInfo.setId(null);
+            }
+            baseAttrInfoMapper.insertSelective(baseAttrInfo);
+        }
+        //把原属性值全部清空
+        BaseAttrValue baseAttrValueDel = new BaseAttrValue();
+        baseAttrValueDel.setAttrId(baseAttrInfo.getId());
+        baseAttrValueMapper.delete(baseAttrValueDel);
+        //重新插入属性
+        if(baseAttrInfo.getAttrValueList()!=null&&baseAttrInfo.getAttrValueList().size()>0){
+            for (BaseAttrValue attrValue : baseAttrInfo.getAttrValueList()) {
+                //防止主键被赋上一个空字符串
+                if(attrValue.getId()==null||attrValue.getId().toString().length()==0){
+                    attrValue.setId(null);
+                }
+                attrValue.setAttrId(baseAttrInfo.getId());
+                baseAttrValueMapper.insertSelective(attrValue);
+            }
+        }
+//        baseAttrInfoMapper.insertSelective(baseAttrInfo);
+//        List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+//        for (BaseAttrValue baseAttrValue : attrValueList) {
+//            baseAttrValue.setAttrId(baseAttrInfo.getId());
+//            baseAttrValueMapper.insert(baseAttrValue);
+//        }
+    }
+
+    @Override
+    public int deleteAttr(String attrId) {
+        BaseAttrValue baseAttrValue = new BaseAttrValue();
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrValue.setAttrId(Long.parseLong(attrId));
+        baseAttrInfo.setId(Long.parseLong(attrId));
+        baseAttrValueMapper.delete(baseAttrValue);
+        int i = baseAttrInfoMapper.delete(baseAttrInfo);
+        return i;
+    }
+
+
 }

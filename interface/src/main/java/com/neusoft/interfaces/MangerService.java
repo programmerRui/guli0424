@@ -17,4 +17,8 @@ public interface MangerService {
     List<BaseCatalog3> getCatalog3(String catalog2Id);
 
     List<BaseAttrInfo> getAttrInfo(String catalog3Id);
+
+    void saveAttr(BaseAttrInfo baseAttrInfo);
+
+    int deleteAttr(String attrId);
 }

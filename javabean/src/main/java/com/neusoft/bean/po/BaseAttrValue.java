@@ -78,4 +78,13 @@ public class BaseAttrValue  implements Serializable {
     public void setAttrId(Long attrId) {
         this.attrId = attrId;
     }
+
+    @Override
+    public String toString() {
+        return "BaseAttrValue{" +
+                "id=" + id +
+                ", valueName='" + valueName + '\'' +
+                ", attrId=" + attrId +
+                '}';
+    }
 }

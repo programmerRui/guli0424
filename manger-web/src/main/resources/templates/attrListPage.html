@@ -18,7 +18,7 @@
     <div id="tb">
         <a href="javascript:addAttr();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
         <a href="javascript:editAttr();" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+        <a href="javascript:deleteAttr();" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
         <div>
             一级分类：<input id="ctg1ForAttrList" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'getCatalog1',
             onSelect: function(rec){
@@ -55,7 +55,6 @@
         // 打开属性添加的对话框
         if(catalog3Id){
             $("#dlg").dialog("open");
-
             // 初始化
             var attrInfo = $("#dg").datagrid("getSelected");
             initAttrValueDatagrid(attrInfo);
@@ -77,7 +76,32 @@
         }else{
             alert("请选择三级分类的id");
         }
-
+    }
+    function deleteAttr() {
+        var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
+        // 打开属性添加的对话框
+        if(catalog3Id){
+            var attrInfo = $("#dg").datagrid("getSelected");
+            var attrId=attrInfo.id;
+            if(confirm("确定删除这条数据？")){
+                href:"deleteAttr.do?attrId=attrId";
+                $.ajax({
+                    url: "deleteAttr.do",
+                    type: "post",
+                    dataType: "text",
+                    data: {
+                        attrId: attrId
+                    },
+                    success: function (data) {
+                        if(confirm("删除成功")&&data>0){
+                            reloadAttrList();
+                        }
+                    }
+                })
+            }
+        }else{
+            alert("请选择三级分类的id");
+        }
     }
 </SCRIPT>
 </body>

@@ -8,8 +8,11 @@
 
     <div id="dlg" class="easyui-dialog" title="编辑属性" style="width:600px;height:500px;"
          closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:true,buttons:'#bb'" >
-            <label>属性名称:</label>
-            <input  id="attrName" name="attrName" class="easyui-textbox" data-options="" style="width:100px"/>
+             <label>编码:</label>
+            <input id="id" name="id" class="easyui-textbox"  style="width:100px" />
+           <!-- type="hidden" onkeyup-->
+             <label>属性名称:</label>
+            <input  id="attrName" name="attrName" class="easyui-textbox" style="width:100px" />
             <br/><br/>
             <table id="dg_av" class="easyui-datagrid" title="属性值列表"></table>
     </div>
@@ -24,8 +27,10 @@
     
     function saveAttr() {
         var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
+        var id = $("#id").val();
         var attrName = $("#attrName").val();
         var attrInfo = {};
+        attrInfo["id"] = id;//{"attrName":attrName}
         attrInfo["attrName"] = attrName;//{"attrName":attrName}
         attrInfo["catalog3Id"] = catalog3Id;
 
@@ -90,6 +95,9 @@
          if(attrInfo){
              // 给attrName赋值
              $("#attrName").textbox("setText",attrInfo.attrName);
+             $("#attrName").attr("value",attrInfo.attrName)
+             $("#id").attr("value",attrInfo.id)
+             $("#id").textbox("setText",attrInfo.id);
              // 给属性值列表赋值
          }
     }
