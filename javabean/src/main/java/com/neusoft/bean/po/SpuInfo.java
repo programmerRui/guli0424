@@ -3,7 +3,9 @@ package com.neusoft.bean.po;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
 
 @Table(name = "spu_info")
 public class SpuInfo  implements Serializable {
@@ -35,6 +37,11 @@ public class SpuInfo  implements Serializable {
      */
     @Column(name = "tm_id")
     private Long tmId;
+
+    @Transient
+    private List<SpuSaleAttr> spuSaleAttrList;
+    @Transient
+    private List<SpuImage> spuImageList;
 
     /**
      * 获取商品id
@@ -124,5 +131,34 @@ public class SpuInfo  implements Serializable {
      */
     public void setTmId(Long tmId) {
         this.tmId = tmId;
+    }
+
+    public List<SpuSaleAttr> getSpuSaleAttrList() {
+        return spuSaleAttrList;
+    }
+
+    public void setSpuSaleAttrList(List<SpuSaleAttr> spuSaleAttrList) {
+        this.spuSaleAttrList = spuSaleAttrList;
+    }
+
+    public List<SpuImage> getSpuImageList() {
+        return spuImageList;
+    }
+
+    public void setSpuImageList(List<SpuImage> spuImageList) {
+        this.spuImageList = spuImageList;
+    }
+
+    @Override
+    public String toString() {
+        return "SpuInfo{" +
+                "id=" + id +
+                ", spuName='" + spuName + '\'' +
+                ", description='" + description + '\'' +
+                ", catalog3Id=" + catalog3Id +
+                ", tmId=" + tmId +
+                ", spuSaleAttrList=" + spuSaleAttrList +
+                ", spuImageList=" + spuImageList +
+                '}';
     }
 }

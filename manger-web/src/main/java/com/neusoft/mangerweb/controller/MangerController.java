@@ -1,10 +1,8 @@
 package com.neusoft.mangerweb.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.neusoft.bean.po.BaseAttrInfo;
-import com.neusoft.bean.po.BaseCatalog1;
-import com.neusoft.bean.po.BaseCatalog2;
-import com.neusoft.bean.po.BaseCatalog3;
+import com.alibaba.fastjson.JSONObject;
+import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.MangerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +23,6 @@ public class MangerController {
     @RequestMapping("attrListPage.do")
     public String attrListPage(){
         return "attrListPage";
-    }
-    @RequestMapping("spuListPage.do")
-    public String spuListPage(){
-        return "spuListPage";
     }
     @RequestMapping("getCatalog1")
     @ResponseBody
@@ -65,5 +59,14 @@ public class MangerController {
     public int deleteAttr(String attrId){
         int num = mangerService.deleteAttr(attrId);
         return num;
+    }
+    @RequestMapping("selectAttrValue.do")
+    @ResponseBody
+    public String selectAttrValue(String attrId){
+        List<BaseAttrValue> baseAttrValues = mangerService.selectAttrValue(attrId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("value",baseAttrValues);
+        String json=jsonObject.toJSONString();
+        return json;
     }
 }

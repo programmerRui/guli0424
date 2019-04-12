@@ -41,23 +41,37 @@
 <SCRIPT language="JavaScript">
     function reloadAttrList() {
        var ctg3Id =  $("#ctg3ForAttrList").combobox("getValue");
-
        $("#dg").datagrid({
            url:"getAttrList?catalog3Id="+ctg3Id
        });
     }
-
+    function cleartable() {
+        $("#attrName").textbox("setText",null);
+        $("#id").textbox("setText",null);
+        $("#dg_av").datagrid("loadData", { total: 0, rows: [] });
+    }
 
     function editAttr() {
-
+       cleartable();
         var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
-
         // 打开属性添加的对话框
         if(catalog3Id){
             $("#dlg").dialog("open");
             // 初始化
             var attrInfo = $("#dg").datagrid("getSelected");
-            initAttrValueDatagrid(attrInfo);
+            var attrId=attrInfo.id;
+            $.ajax({
+                url: "selectAttrValue.do",
+                type: "post",
+                dataType: "json",
+                data: {
+                    attrId: attrId
+                },
+                success: function (data) {
+                    initAttrValueDatagrid(attrInfo,data);
+                }
+            })
+
         }else{
             alert("请选择三级分类的id");
         }
@@ -65,7 +79,7 @@
     }
     
     function addAttr() {
-
+        cleartable();
         var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
 
         // 打开属性添加的对话框
@@ -84,7 +98,6 @@
             var attrInfo = $("#dg").datagrid("getSelected");
             var attrId=attrInfo.id;
             if(confirm("确定删除这条数据？")){
-                href:"deleteAttr.do?attrId=attrId";
                 $.ajax({
                     url: "deleteAttr.do",
                     type: "post",

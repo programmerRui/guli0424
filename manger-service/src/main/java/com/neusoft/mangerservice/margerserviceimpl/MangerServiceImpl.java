@@ -92,5 +92,12 @@ public class MangerServiceImpl implements MangerService {
         return i;
     }
 
+    @Override
+    public List<BaseAttrValue> selectAttrValue(String attrId) {
+        BaseAttrValue baseAttrValue = new BaseAttrValue();
+        baseAttrValue.setAttrId(Long.parseLong(attrId));
+        return baseAttrValueMapper.select(baseAttrValue);
+    }
+
 
 }

@@ -19,12 +19,17 @@
 
     <div id="bb">
         <a href="#" class="easyui-linkbutton" onclick="saveAttr()">保存</a>
-        <a href="#" class="easyui-linkbutton">关闭</a>
+        <a href="#" class="easyui-linkbutton" onclick="closeWid()">关闭</a>
     </div>
 
 
 <SCRIPT language="JavaScript">
-    
+
+    function closeWid(){
+        $("#dlg").dialog("close");
+    }
+
+
     function saveAttr() {
         var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
         var id = $("#id").val();
@@ -48,8 +53,7 @@
         });
     }
     
-    function initAttrValueDatagrid(attrInfo) {
-
+    function initAttrValueDatagrid(attrInfo,data) {
         d = $('#dg_av').datagrid({
                         columns:[[
                             {field:'id',title:'编号',width:100},
@@ -95,10 +99,13 @@
          if(attrInfo){
              // 给attrName赋值
              $("#attrName").textbox("setText",attrInfo.attrName);
-             $("#attrName").attr("value",attrInfo.attrName)
-             $("#id").attr("value",attrInfo.id)
              $("#id").textbox("setText",attrInfo.id);
              // 给属性值列表赋值
+             for(var i=0;i<data.value.length;i++){
+                 $("#dg_av").datagrid("appendRow",{
+                     id:data.value[i].id,valueName:data.value[i].valueName
+                 });
+             }
          }
     }
 </SCRIPT>

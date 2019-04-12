@@ -75,7 +75,6 @@
                 spuInfo["spuSaleAttrList["+i+"].saleAttrId"]=attr.saleAttrId;
                 spuInfo["spuSaleAttrList["+i+"].saleAttrName"]=attr.saleAttrName;
 
-
                 // 封装销售属性值
                 var attrValueRows = attr.spuSaleAttrValueJson.rows;
                 $(attrValueRows).each(function(j,attrValue){
@@ -84,19 +83,20 @@
                 })
             });
 
-            // 封装图片信息
+            //封装图片信息
             var imgRows = $("#spuImgDg").datagrid("getRows");
             $(imgRows).each(function(i,img){
                 spuInfo["spuImageList["+i+"].imgName"] = img.imgName;
                 spuInfo["spuImageList["+i+"].imgUrl"] = img.imgUrl;
             })
 
-            // 异步保存
-            $.post("saveSpu",spuInfo,function (data) {
+            //异步保存
+            $.post("saveSpu",spuInfo,function(data) {
                 alert(data);
                 // 关闭对话框
                 $("#spu_dlg").dialog("close")
                 // 刷新spu列表
+                reloadSpuList();
             });
 
 

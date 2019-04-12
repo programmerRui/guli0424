@@ -15,6 +15,7 @@
     <module>javabean</module>
     <module>user-web</module>
     <module>user-service</module>
+    <module>fastdfs-client-java</module>
   </modules>
   <packaging>pom</packaging>
 
@@ -47,6 +48,7 @@
 
   <dependencyManagement>
     <dependencies>
+
       <!--servlet api依赖-->
       <dependency>
         <groupId>javax.servlet</groupId>
@@ -204,6 +206,7 @@
         <artifactId>aspectjweaver</artifactId>
         <version>1.8.10</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 

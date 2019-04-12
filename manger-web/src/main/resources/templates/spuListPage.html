@@ -43,7 +43,7 @@
             三级分类：
             <select name="ctg3ForSpuList" id="ctg3ForSpuList"  class="easyui-combobox" data-options="valueField:'id',textField:'name',
             onSelect:function(rec){
-                   $('#spulist_dg').datagrid({url:'spuList?catalog3Id='+rec.id});
+                   $('#spulist_dg').datagrid({url:'spuList.do?catalog3Id='+rec.id});
                }
 "    style="width:100px" ></select>
             <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="javascript:reloadSpuList()"  >刷新列表</a>
@@ -85,7 +85,7 @@
         if(!catalog3Id){
             catalog3Id = "61";
         }
-        $('#spulist_dg').datagrid({url:'spuList?catalog3Id='+catalog3Id});
+        $('#spulist_dg').datagrid({url:'spuList.do?catalog3Id='+catalog3Id});
     }
 
     function addSpuInfo() {
