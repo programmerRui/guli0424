@@ -37,7 +37,7 @@ public class SPUServiceImpl implements SPUService {
     public void saveSpu(SpuInfo spuInfo) {
         //保存spuInfo
         spuInfoMapper.insertSelective(spuInfo);
-        Long spuId = spuInfo.getId();
+        Long spuId = spuInfoMapper.getMaxId();
 
         System.out.println(spuId);
         //保存spu销售属性
@@ -60,8 +60,10 @@ public class SPUServiceImpl implements SPUService {
         }
     }
 
-//    @Override
-//    public Long maxId() {
-//        return spuInfoMapper.maxId();
-//    }
+    @Override
+    public Long getMaxId() {
+        return spuInfoMapper.getMaxId();
+    }
+
+
 }

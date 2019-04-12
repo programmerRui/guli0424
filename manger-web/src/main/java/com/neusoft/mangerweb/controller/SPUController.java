@@ -34,11 +34,11 @@ public class SPUController {
         return spuService.baseSaleAttrList();
     }
 
-//    @RequestMapping("maxId")
-//    @ResponseBody
-//    public Long maxId(){
-//        return spuService.maxId();
-//    }
+    @RequestMapping("getMaxId")
+    @ResponseBody
+    public Long maxId(){
+        return spuService.getMaxId();
+    }
 
     @RequestMapping("saveSpu")
     @ResponseBody

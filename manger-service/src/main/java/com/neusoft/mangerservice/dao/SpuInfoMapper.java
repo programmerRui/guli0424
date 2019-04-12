@@ -5,4 +5,5 @@ import com.neusoft.bean.po.SpuInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface SpuInfoMapper extends Mapper<SpuInfo> {
+    Long getMaxId();
 }

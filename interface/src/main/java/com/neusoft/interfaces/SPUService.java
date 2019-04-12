@@ -12,5 +12,5 @@ public interface SPUService {
 
     void saveSpu(SpuInfo spuInfo);
 
-
+    Long getMaxId();
 }
