@@ -90,4 +90,10 @@ public class SpuController {
         String json=jsonObject.toString();
         return json;
     }
+    @RequestMapping("getSpuImageListBySpuId")
+    @ResponseBody
+    public List<SpuImage> getSpuImageListBySpuId(Long spuId){
+        List<SpuImage> spuImageList=spuService.getSpuImageListBySpuId(spuId);
+        return spuImageList;
+    }
 }

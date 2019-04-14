@@ -110,6 +110,7 @@ public class SpuServiceImpl implements SpuService {
             }
         }
     }
+
     @Override
     public Long getMaxId() {
         return spuInfoMapper.getMaxId();
@@ -159,7 +160,13 @@ public class SpuServiceImpl implements SpuService {
         }
         return spuSaleAttrList;
     }
-
+    //获取图片信息
+    @Override
+    public List<SpuImage> getSpuImageListBySpuId(Long spuId) {
+        SpuImage spuImage = new SpuImage();
+        spuImage.setSpuId(spuId);
+        return spuImageMapper.select(spuImage);
+    }
 
 
 

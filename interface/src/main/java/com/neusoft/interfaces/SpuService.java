@@ -25,4 +25,6 @@ public interface SpuService {
     List<SpuSaleAttr> getSpuSaleAttr(Long spuId);
 
     void updataSpu(SpuInfo spuInfo);
+
+    List<SpuImage> getSpuImageListBySpuId(Long spuId);
 }

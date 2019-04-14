@@ -86,7 +86,9 @@
     function addSkuInfo() {
         // 打开sku添加的对话框
         $("#sku_dlg").dialog("open");
-        initSkuInfoDlg();
+        var spuInfo = $("#spulist_dg").datagrid("getSelected");
+        // 初始化对话框
+        initSkuInfoDlg(spuInfo);
 
     }
     function deleteSpuInfo() {
