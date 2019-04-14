@@ -46,6 +46,12 @@ public class SpuController {
         spuService.saveSpu(spuInfo);
         return "操作成功";
     }
+    @RequestMapping("updataSpu")
+    @ResponseBody
+    public String updataSpu(SpuInfo spuInfo){
+        spuService.updataSpu(spuInfo);
+        return "操作成功";
+    }
     @RequestMapping("fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("file") MultipartFile file){

@@ -10,13 +10,15 @@
          closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:false" buttons="#spuBtns" >
         <form id="spuForm">
             <br/>
+            <label>spuId:</label>
+            <input id="spuId" name="spuId" class="easyui-textbox" data-options="" style="width:100px;"/>
+            <br/><br/>
             <label>spu名称:</label>
             <input  id="spuName" name="spuName" class="easyui-textbox" data-options="" style="width:300px;"/>
             <br/><br/>
             <label>spu描述:</label>
             <input  id="description" name="description" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
 
-            <input id="spuId" name="spuId" class="easyui-textbox" type="hidden"/>
             <br/><br/>
 
             <!----------------商品图片列表 ----------------------->
@@ -62,7 +64,7 @@
         function saveSpu() {
            // 获取spu的json格式的js数据对象
             var spuInfo = {};
-            spuInfo["spuId"] = $("#spuId").textbox("getValue");
+            spuInfo["id"] = $("#spuId").textbox("getValue");
             spuInfo["spuName"] = $("#spuName").textbox("getValue");
             spuInfo["description"] = $("#description").textbox("getValue");
             var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
@@ -90,6 +92,17 @@
                 spuInfo["spuImageList["+i+"].imgName"] = img.imgName;
                 spuInfo["spuImageList["+i+"].imgUrl"] = img.imgUrl;
             })
+
+            if(spuInfo.id){
+                //异步保存
+                $.post("updataSpu",spuInfo,function(data) {
+                    alert(data);
+                    // 关闭对话框
+                    $("#spu_dlg").dialog("close")
+                    // 刷新spu列表
+                    reloadSpuList();
+                });
+            }else{
                 //异步保存
                 $.post("saveSpu",spuInfo,function(data) {
                     alert(data);
@@ -98,6 +111,7 @@
                     // 刷新spu列表
                     reloadSpuList();
                 });
+            }
         }
         function closeSpu() {
             $("#spu_dlg").dialog("close")
@@ -317,6 +331,10 @@
             $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
             // 获得选中的行对象
             var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("getSelected");
+            // 获得行号
+            var rowNum = $("#spuSaleAttrDg").datagrid("getRowIndex",spuSaleAttrDg);
+            // 根据行号删除
+            $("#spuSaleAttrDg").datagrid("deleteRow",rowNum);
             // 初始化spu销售属性对话框
             initSpuSaleAttrDlg(spuSaleAttrDg);
         }

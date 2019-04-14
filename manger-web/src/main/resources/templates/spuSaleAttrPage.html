@@ -83,6 +83,7 @@
             });
             //回显销售属性值列表
             if(spuSaleAttrDg){
+                console.log(spuSaleAttrDg);
               for(var i=0;i<spuSaleAttrDg.spuSaleAttrValueJson.rows.length;i++){
                   $("#spuSaleAttrValueDg").datagrid("appendRow",{
                       id:spuSaleAttrDg.spuSaleAttrValueJson.rows[i].id,
