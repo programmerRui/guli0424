@@ -3,18 +3,17 @@ package com.neusoft.mangerweb.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.neusoft.bean.po.*;
-import com.neusoft.interfaces.MangerService;
+import com.neusoft.interfaces.AttrService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-public class MangerController {
+public class AttrController {
     @Reference
-    MangerService mangerService;
+    AttrService mangerService;
 
     @RequestMapping("index.do")
     public String index(){
@@ -68,5 +67,11 @@ public class MangerController {
         jsonObject.put("value",baseAttrValues);
         String json=jsonObject.toJSONString();
         return json;
+    }
+    @RequestMapping("getAttrListByCtg3Id")
+    @ResponseBody
+    public List<BaseAttrInfo> getAttrListByCtg3Id(Long catalog3Id){
+        List<BaseAttrInfo> baseAttrInfoList= mangerService.getAttrListByCtg3Id(catalog3Id);
+        return baseAttrInfoList;
     }
 }

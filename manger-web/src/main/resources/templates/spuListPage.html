@@ -22,7 +22,7 @@
         <div style="margin-bottom:5px">
             <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSpuInfo()">添加</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSpuInfo()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSpuInfo()">删除</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuInfo()">增加sku</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="showSkuInfoList()"> sku列表</a>
         </div>
@@ -58,7 +58,13 @@
 <div th:include="skuListPage"></div>
 
 <script language="JavaScript">
-    
+    function cleartable() {
+        $("#spuName").textbox("setText",null);
+        $("#description").textbox("setText",null);
+        $("#spuImgDg").datagrid("loadData", { total: 0, rows: [] });
+        $("#spuSaleAttrDg").datagrid("loadData", { total: 0, rows: [] });
+    }
+
     function showSkuInfoList() {
         // 打开sku对话框
         $("#skulist_dlg").dialog("open");
@@ -68,33 +74,66 @@
         initSkuListDatagrid(spuInfo);
 
     }
-    
+    function editSpuInfo() {
+        //清空数据
+        cleartable()
+        //打开一个spu添加的对话框
+        $("#spu_dlg").dialog("open");
+        var spuInfo = $("#spulist_dg").datagrid("getSelected");
+        // 初始化对话框
+        initSpuInfoDlg(spuInfo);
+    }
     function addSkuInfo() {
         // 打开sku添加的对话框
         $("#sku_dlg").dialog("open");
-
-        // 初始化对话框
-        var spuInfo = $("#spulist_dg").datagrid("getSelected");
-
-        initSkuInfoDlg(spuInfo);
+        initSkuInfoDlg();
 
     }
-    
+    function deleteSpuInfo() {
+        var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
+        // 打开属性添加的对话框
+        if(catalog3Id){
+            var spuInfo = $("#spulist_dg").datagrid("getSelected");
+            var spuId=spuInfo.id;
+            if(confirm("确定删除这条数据？")){
+                $.ajax({
+                    url: "deleteSpu.do",
+                    type: "post",
+                    dataType: "text",
+                    data: {
+                        spuId: spuId
+                    },
+                    success: function (data) {
+                        if(data>0){
+                           alert("删除成功")
+                            reloadSpuList();
+                        }else{
+                            alert("删除失败")
+                        }
+                    }
+                })
+            }
+        }else{
+            alert("请选择三级分类的id");
+        }
+    }
+
     function reloadSpuList() {
-        catalog3Id = $("#ctg3ForSpuList").datagrid("getValue");
+        var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
         if(!catalog3Id){
+            alert("你没有选择三级分类的id，默认显示其它")
             catalog3Id = "61";
         }
-        $('#spulist_dg').datagrid({url:'spuList.do?catalog3Id='+catalog3Id});
+        $("#spulist_dg").datagrid({url:'spuList.do?catalog3Id='+catalog3Id});
     }
 
     function addSpuInfo() {
+        //清空数据
+        cleartable()
         //打开一个spu添加的对话框
         $("#spu_dlg").dialog("open");
-
         // 初始化对话框
         initSpuInfoDlg();
-
     }
 </script>
 </body>

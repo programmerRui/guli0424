@@ -16,7 +16,7 @@
             <label>spu描述:</label>
             <input  id="description" name="description" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
 
-            <input id="spuId" name="spuId" type="hidden"/>
+            <input id="spuId" name="spuId" class="easyui-textbox" type="hidden"/>
             <br/><br/>
 
             <!----------------商品图片列表 ----------------------->
@@ -29,7 +29,7 @@
                 <div style="margin-bottom:5px">
                     <a href="#" id="spuImgAdd" class="easyui-linkbutton" iconCls="icon-remove" plain="true">添加图片</a>
                     <a href="#" id="spuImgUploadBtn" class="easyui-linkbutton" iconCls="icon-save" plain="true" >图片上传</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+                    <a href="#" id="spuImgdelete" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="spuImgdelete()">删除</a>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                 <div style="margin-bottom:5px">
                     <a href="#" id="spuSaleAttrAddBtn" class="easyui-linkbutton" iconCls="icon-add" onclick="addSpuSaleAttr()" plain="true">添加销售属性</a>
                     <a href="#" id="spuSaleAttrEditBtn" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSpuSaleAttr()">编辑销售属性</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >删除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSpuSaleAttr()">删除</a>
                 </div>
             </div>
 
@@ -62,6 +62,7 @@
         function saveSpu() {
            // 获取spu的json格式的js数据对象
             var spuInfo = {};
+            spuInfo["spuId"] = $("#spuId").textbox("getValue");
             spuInfo["spuName"] = $("#spuName").textbox("getValue");
             spuInfo["description"] = $("#description").textbox("getValue");
             var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
@@ -89,26 +90,48 @@
                 spuInfo["spuImageList["+i+"].imgName"] = img.imgName;
                 spuInfo["spuImageList["+i+"].imgUrl"] = img.imgUrl;
             })
-
-            //异步保存
-            $.post("saveSpu",spuInfo,function(data) {
-                alert(data);
-                // 关闭对话框
-                $("#spu_dlg").dialog("close")
-                // 刷新spu列表
-                reloadSpuList();
-            });
-
-
+                //异步保存
+                $.post("saveSpu",spuInfo,function(data) {
+                    alert(data);
+                    // 关闭对话框
+                    $("#spu_dlg").dialog("close")
+                    // 刷新spu列表
+                    reloadSpuList();
+                });
         }
-    
-        function initSpuInfoDlg() {
+        function closeSpu() {
+            $("#spu_dlg").dialog("close")
+            // 刷新spu列表
+            reloadSpuList();
+        }
+        function initSpuInfoDlg(spuInfo) {
             // 初始化上传控件插件(webuploader)
             initUploader();
-            // 初始化图片列表
-            initSpuImgListDatagrid();
-            // 初始化销售属性
-            initSpuSaleAttrListDatagrid();
+            if(spuInfo){
+                $("#spuName").textbox("setText",spuInfo.spuName);
+                $("#description").textbox("setText",spuInfo.description);
+                $("#spuId").textbox("setText",spuInfo.id);
+                var spuId=spuInfo.id;
+                $.ajax({
+                    url: "selectImage",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        spuId:spuId
+                    },
+                    success: function (data) {
+                        // 初始化图片列表
+                        initSpuImgListDatagrid(data);
+                    }
+                });
+                // 初始化销售属性
+                initSpuSaleAttrListDatagrid(spuInfo);
+            }else {
+                // 初始化图片列表
+                initSpuImgListDatagrid();
+                // 初始化销售属性
+                initSpuSaleAttrListDatagrid();
+            }
 
         }
 
@@ -179,9 +202,8 @@
 
 
         // 初始化图片表格和datagrid整合
-        function initSpuImgListDatagrid(spuInfo) {
-            $('#spuImgDg').datagrid('loadData', {total: 0, rows: []});
-
+        function initSpuImgListDatagrid(data) {
+            $("#spuImgDg").datagrid('loadData', {total: 0, rows: []});
             spuImgDg = $("#spuImgDg").datagrid({
                 idField: 'fileId',    //标识行的主键  可以利用getRowIndex进行查询
                 columns: [[
@@ -224,10 +246,23 @@
                     return "<img src=" + rowData.imgUrl + " style='width:100px;height:100px;'>";
                 }
             });
+
+            if(data){
+                for(var i=0;i<data.image.length;i++){
+                    var row={
+                        fileId:data.image[i].id,
+                        imgName:data.image[i].imgName,
+                        imgUrl:data.image[i].imgUrl,
+                        progress:100
+                    }
+                    $("#spuImgDg").datagrid('appendRow',row);
+                }
+
+            }
         }
 
 
-        function initSpuSaleAttrListDatagrid() {
+        function initSpuSaleAttrListDatagrid(spuInfo) {
             $("#spuSaleAttrDg").datagrid({
                 columns:[[
                     {field:'id',title:'id',width:100,hidden:true},
@@ -235,6 +270,37 @@
                     {field:'saleAttrName',title:'销售属性简称',width:100},
                     {field:'spuSaleAttrValueJson',title:'页面暂存',width:200,align:'right'}
                 ]]
+            });
+            var spuId=spuInfo.id;
+            $.ajax({
+                url: "getSpuSaleAttr",
+                type: "post",
+                dataType: "json",
+                data: {
+                    spuId:spuId
+                },
+                success: function (data) {
+                    // 初始化销售属性列表
+                    if(data){
+                        console.log(data);
+                        $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
+                        for(var i=0;i<data.spuSaleAttr.length;i++) {
+                            for(var j=0;j<data.spuSaleAttr[i].spuSaleAttrValueList.length;j++){
+                                $("#spuSaleAttrValueDg").datagrid("appendRow",{
+                                    id:data.spuSaleAttr[i].spuSaleAttrValueList[j].id,
+                                    saleAttrValueName:data.spuSaleAttr[i].spuSaleAttrValueList[j].saleAttrValueName
+                                });
+                                var spuSaleAttrValueJson = $("#spuSaleAttrValueDg").datagrid("getData");
+                            }
+                            $("#spuSaleAttrDg").datagrid('appendRow', {
+                                id: data.spuSaleAttr[i].id,
+                                saleAttrId: data.spuSaleAttr[i].saleAttrId,
+                                saleAttrName: data.spuSaleAttr[i].saleAttrName,
+                                spuSaleAttrValueJson:spuSaleAttrValueJson
+                            });
+                        }
+                    }
+                }
             });
         }
 
@@ -244,6 +310,31 @@
             $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
             // 初始化spu销售属性对话框
             initSpuSaleAttrDlg();
+        }
+        function editSpuSaleAttr() {
+            // 打开spu的销售属性对话框
+            $("#spuSaleAttr_dlg").dialog("open");
+            $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
+            // 获得选中的行对象
+            var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("getSelected");
+            // 初始化spu销售属性对话框
+            initSpuSaleAttrDlg(spuSaleAttrDg);
+        }
+        function deleteSpuSaleAttr() {
+            // 获得选中的行对象
+            var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("getSelected");
+            // 获得行号
+            var rowNum = $("#spuSaleAttrDg").datagrid("getRowIndex",spuSaleAttrDg);
+            // 根据行号删除
+            $("#spuSaleAttrDg").datagrid("deleteRow",rowNum);
+        }
+        function spuImgdelete() {
+            // 获得选中的行对象
+            var spuSaleAttrDg = $("#spuImgDg").datagrid("getSelected");
+            // 获得行号
+            var rowNum = $("#spuImgDg").datagrid("getRowIndex",spuSaleAttrDg);
+            // 根据行号删除
+            $("#spuImgDg").datagrid("deleteRow",rowNum);
         }
 </script>
 </body>

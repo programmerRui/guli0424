@@ -47,18 +47,21 @@
             $("#spuSaleAttrDg").datagrid("appendRow",{
                 saleAttrId:saleAttrId,saleAttrName:saleAttrName,spuSaleAttrValueJson:data
             });
-
             // 关闭spu销售属性对话框
             $("#spuSaleAttr_dlg").dialog("close");
         }
         
-        function initSpuSaleAttrDlg() {
+        function initSpuSaleAttrDlg(spuSaleAttrDg) {
+            if(spuSaleAttrDg){
+                //回显销售属性
+                $("#saleAttrSelect").combobox("setValue",spuSaleAttrDg.saleAttrId);
+                $("#saleAttrSelect").combobox("setText",spuSaleAttrDg.saleAttrName);
+            }
             // 初始化销售属性的combobox
-
-            initSpuSaleAttrValueListDatagrid();
+            initSpuSaleAttrValueListDatagrid(spuSaleAttrDg);
         }
         
-        function initSpuSaleAttrValueListDatagrid() {
+        function initSpuSaleAttrValueListDatagrid(spuSaleAttrDg) {
             d=$("#spuSaleAttrValueDg").datagrid({
                 columns:[[
                     {field:'id',title:'id',width:100},
@@ -78,6 +81,15 @@
                 });
             }
             });
+            //回显销售属性值列表
+            if(spuSaleAttrDg){
+              for(var i=0;i<spuSaleAttrDg.spuSaleAttrValueJson.rows.length;i++){
+                  $("#spuSaleAttrValueDg").datagrid("appendRow",{
+                      id:spuSaleAttrDg.spuSaleAttrValueJson.rows[i].id,
+                      saleAttrValueName:spuSaleAttrDg.spuSaleAttrValueJson.rows[i].saleAttrValueName
+                  });
+              }
+            }
         }
         
         function addSpuSaleAttrValue() {

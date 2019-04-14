@@ -5,7 +5,7 @@ import com.neusoft.bean.po.*;
 import java.util.List;
 
 
-public interface MangerService {
+public interface AttrService {
 
     List<BaseCatalog1> getCatalog1();
 
@@ -20,4 +20,6 @@ public interface MangerService {
     int deleteAttr(String attrId);
 
     List<BaseAttrValue> selectAttrValue(String attrId);
+
+    List<BaseAttrInfo> getAttrListByCtg3Id(Long catalog3Id);
 }

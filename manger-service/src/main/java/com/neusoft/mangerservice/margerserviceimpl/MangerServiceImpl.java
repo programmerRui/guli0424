@@ -2,14 +2,14 @@ package com.neusoft.mangerservice.margerserviceimpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.neusoft.bean.po.*;
-import com.neusoft.interfaces.MangerService;
+import com.neusoft.interfaces.AttrService;
 import com.neusoft.mangerservice.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Service
-public class MangerServiceImpl implements MangerService {
+public class MangerServiceImpl implements AttrService {
     @Autowired
     BaseAttrInfoMapper baseAttrInfoMapper;
     @Autowired
@@ -97,6 +97,21 @@ public class MangerServiceImpl implements MangerService {
         BaseAttrValue baseAttrValue = new BaseAttrValue();
         baseAttrValue.setAttrId(Long.parseLong(attrId));
         return baseAttrValueMapper.select(baseAttrValue);
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrListByCtg3Id(Long catalog3Id) {
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.select(baseAttrInfo);
+        for (BaseAttrInfo attrInfo : baseAttrInfoList) {
+            Long attrId=attrInfo.getId();
+            BaseAttrValue baseAttrValue = new BaseAttrValue();
+            baseAttrValue.setAttrId(attrId);
+            List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue);
+            attrInfo.setAttrValueList(baseAttrValueList);
+        }
+        return baseAttrInfoList;
     }
 
 
