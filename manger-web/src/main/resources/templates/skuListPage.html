@@ -15,6 +15,7 @@
             <th data-options="field:'id'" width="10%">库存单元id </th>
             <th data-options="field:'skuName'" width="60%">库存单元名称</th>
             <th data-options="field:'price'" width="30%">价格</th>
+            <th data-options="field:'spuId',hidden:'true'">spuId</th>
             <th data-options="field:'weight',hidden:'true'" >重量</th>
             <th data-options="field:'catalog3Id',hidden:'true'">三级分类</th>
             <th data-options="field:'skuImageList',hidden:'true'"  >图片列表</th>
@@ -30,7 +31,7 @@
         <div style="margin-bottom:5px">
 
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSkuInfo()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteSkuInfo()">删除</a>
         </div>
         <input id="spuIdForSkuList" name="spuIdForSkuId" type="hidden"/>
         <input id="catalog3IdForSkuList" name="catalog3IdForSkuId" type="hidden"/>
@@ -40,11 +41,35 @@
     </div>
 </div>
 
+<div th:include="skuInfoPage"></div>
+
 <script language="JavaScript">
 
     function initSkuListDatagrid(spuInfo) {
         // 加载sku数据列表
         $("#skulist_dg").datagrid({url:"getSkuListBySpu?spuId="+spuInfo.id});
+    }
+    function deleteSkuInfo() {
+        // 获得选中的行对象
+        var spuSaleAttrDg = $("#skulist_dg").datagrid("getSelected");
+        // 获得行号
+        var rowNum = $("#skulist_dg").datagrid("getRowIndex",spuSaleAttrDg);
+        // 根据行号删除
+        $("#skulist_dg").datagrid("deleteRow",rowNum);
+    }
+    function editSkuInfo() {
+        // 打开sku添加的对话框
+        $("#sku_dlg").dialog("open");
+        // 获得选中的行对象
+        var skuInfo = $("#skulist_dg").datagrid("getSelected");
+        var spuId=skuInfo.spuId;
+        $("#skuId").textbox("setText",skuInfo.id);
+        $("#skuName").textbox("setText",skuInfo.skuName);
+        $("#price").textbox("setText",skuInfo.price);
+        $("#weight").textbox("setText",skuInfo.weight);
+        $("#skuDesc").textbox("setText",skuInfo.skuDesc);
+        // 初始化对话框
+        initSkuInfoDlg(spuId);
     }
 
 </script>

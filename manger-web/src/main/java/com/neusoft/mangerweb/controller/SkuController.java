@@ -21,6 +21,18 @@ public class SkuController {
         return skuListBySpu;
     }
 
+    @RequestMapping("saveSku")
+    @ResponseBody
+    public String saveSku(SkuInfo skuInfo){
+        skuService.saveSku(skuInfo);
+        return "操作成功";
+    }
 
+    @RequestMapping("updateSku")
+    @ResponseBody
+    public String updateSku(SkuInfo skuInfo){
+        skuService.updateSku(skuInfo);
+        return "操作成功";
+    }
 }
 

@@ -5,10 +5,12 @@ import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.SpuService;
 import com.neusoft.mangerservice.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SpuServiceImpl implements SpuService {
     @Autowired
     SpuInfoMapper spuInfoMapper;
@@ -78,18 +80,17 @@ public class SpuServiceImpl implements SpuService {
     public void updataSpu(SpuInfo spuInfo) {
         Long spuInfoId = spuInfo.getId();
         spuInfoMapper.updateByPrimaryKey(spuInfo);
+        //先删除图片信息
         SpuImage spuImage = new SpuImage();
         spuImage.setSpuId(spuInfoId);
-        //先删除图片信息
         spuImageMapper.delete(spuImage);
-        //删除销售属性
+        //删除销售属性值
         SpuSaleAttrValue spuSaleAttrValue = new SpuSaleAttrValue();
         spuSaleAttrValue.setSpuId(spuInfoId);
-        //删除销售属性值
         spuSaleAttrValueMapper.delete(spuSaleAttrValue);
+        //删除销售属性
         SpuSaleAttr spuSaleAttr = new SpuSaleAttr();
         spuSaleAttr.setSpuId(spuInfoId);
-        //删除销售属性
         spuSaleAttrMapper.delete(spuSaleAttr);
         //重新插入图片信息
         List<SpuImage> spuImageList = spuInfo.getSpuImageList();
@@ -153,8 +154,10 @@ public class SpuServiceImpl implements SpuService {
         spuSaleAttr.setSpuId(spuId);
         List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.select(spuSaleAttr);
         for (SpuSaleAttr saleAttr : spuSaleAttrList) {
+            Long saleAttrId = saleAttr.getSaleAttrId();
             SpuSaleAttrValue spuSaleAttrValue = new SpuSaleAttrValue();
             spuSaleAttrValue.setSpuId(spuId);
+            spuSaleAttrValue.setSaleAttrId(saleAttrId);
             List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttrValueMapper.select(spuSaleAttrValue);
             saleAttr.setSpuSaleAttrValueList(spuSaleAttrValueList);
         }

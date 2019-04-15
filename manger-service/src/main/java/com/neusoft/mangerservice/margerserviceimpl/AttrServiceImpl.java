@@ -5,11 +5,13 @@ import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.AttrService;
 import com.neusoft.mangerservice.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class MangerServiceImpl implements AttrService {
+@Transactional
+public class AttrServiceImpl implements AttrService {
     @Autowired
     BaseAttrInfoMapper baseAttrInfoMapper;
     @Autowired
@@ -88,8 +90,8 @@ public class MangerServiceImpl implements AttrService {
         baseAttrValue.setAttrId(Long.parseLong(attrId));
         baseAttrInfo.setId(Long.parseLong(attrId));
         baseAttrValueMapper.delete(baseAttrValue);
-        int i = baseAttrInfoMapper.delete(baseAttrInfo);
-        return i;
+        int num = baseAttrInfoMapper.delete(baseAttrInfo);
+        return num;
     }
 
     @Override

@@ -10,6 +10,9 @@
     <form id="skuForm">
         <br/>
         <label>sku名称:</label>
+        <input  id="skuId" name="skuId" class="easyui-textbox" data-options="" style="width:300px;"/>
+        <br/><br/>
+        <label>sku名称:</label>
         <input  id="skuName" name="skuName" class="easyui-textbox" data-options="" style="width:300px;"/>
         <br/><br/>
         <label>商品价格:</label>
@@ -21,8 +24,6 @@
         <label>商品规格描述:</label>
         <input  id="skuDesc" name="skuDesc" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
         <input id="spuIdForSku" name="spuId" type="hidden"/>
-
-        <input id="skuId" name="id" type="hidden"/>
 
         <input id="catalog3IdForSku" name="catalog3Id" type="hidden"/>
         <br/><br/>
@@ -61,17 +62,17 @@
 </div>
 
 <script language="JavaScript">
-    
-    function initSkuInfoDlg(spuInfo) {
+
+    function initSkuInfoDlg(spuId) {
         catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
         // 初始化sku表单
-        $("#spuIdForSku").val(spuInfo.id);
+        $("#spuIdForSku").val(spuId);
         // 初始化平台属性
         initAttrInfoGroup(catalog3Id);
         // 初始化销售属性
-        initSpuSaleAttrGroup(spuInfo.id);
+        initSpuSaleAttrGroup(spuId);
         // 初始化图片列表
-        initSkuImgListDatagrid(spuInfo.id);
+        initSkuImgListDatagrid(spuId);
     }
 
     function  initAttrInfoGroup(catalog3Id) {
@@ -105,7 +106,7 @@
             var append = "";
             $(data).each(function(i,saleAttr){
 
-                spanHead = "<span saleAttrId = '"+saleAttr.saleAttrId+"' saleAttrName = '"+saleAttr.saleAttrName+"'>";
+                spanHead = "<span saleAttrId = '"+saleAttr.id+"' saleAttrName = '"+saleAttr.saleAttrName+"'>";
                 saleAttrName = saleAttr.saleAttrName;
                 var spuSaleAttrValueList = saleAttr.spuSaleAttrValueList;
 
@@ -145,11 +146,11 @@
             url:"getSpuImageListBySpuId?spuId="+spuId
         });
     }
-    
+
     function saveSku() {
 
         var skuInfo = {};
-
+        spuInfo["id"] = $("#skuId").textbox("getValue");
         skuInfo["spuId"] = $("#spuIdForSku").val();
         skuInfo["catalog3Id"] = $("#ctg3ForSpuList").combobox("getValue");
         skuInfo["skuDesc"] =$("#skuDesc").textbox("getValue");
@@ -200,15 +201,20 @@
             }
         });
 
-
-        $.post("saveSku",skuInfo,function(data){
-            alert(data);
-        });
-
+        var skuId = $("#skuId").textbox("getValue");
+        if(skuId){
+            $.post("updateSku",skuInfo,function(data){
+                alert(data);
+            });
+        }else{
+            $.post("saveSku",skuInfo,function(data){
+                alert(data);
+            });
+        }
         //关闭对话框
         $("#sku_dlg").dialog("close");
     }
-    
+
 </script>
 </body>
 </html>

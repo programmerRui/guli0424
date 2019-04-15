@@ -3,8 +3,10 @@ package com.neusoft.bean.po;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "sku_info")
 public class SkuInfo  implements Serializable {
@@ -23,7 +25,7 @@ public class SkuInfo  implements Serializable {
     /**
      * 价格
      */
-    private Long price;
+    private BigDecimal price;
 
     /**
      * sku名称
@@ -59,6 +61,15 @@ public class SkuInfo  implements Serializable {
      */
     @Column(name = "sku_default_img")
     private String skuDefaultImg;
+
+    @Transient
+    private List<SkuImage> skuImageList;
+
+    @Transient
+    private List<SkuAttrValue> skuAttrValueList;
+
+    @Transient
+    private List<SkuSaleAttrValue> skuSaleAttrValueList;
 
     /**
      * 获取库存id(itemID)
@@ -101,7 +112,7 @@ public class SkuInfo  implements Serializable {
      *
      * @return price - 价格
      */
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -110,7 +121,7 @@ public class SkuInfo  implements Serializable {
      *
      * @param price 价格
      */
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -220,5 +231,47 @@ public class SkuInfo  implements Serializable {
      */
     public void setSkuDefaultImg(String skuDefaultImg) {
         this.skuDefaultImg = skuDefaultImg == null ? null : skuDefaultImg.trim();
+    }
+
+    public List<SkuImage> getSkuImageList() {
+        return skuImageList;
+    }
+
+    public void setSkuImageList(List<SkuImage> skuImageList) {
+        this.skuImageList = skuImageList;
+    }
+
+    public List<SkuAttrValue> getSkuAttrValueList() {
+        return skuAttrValueList;
+    }
+
+    public void setSkuAttrValueList(List<SkuAttrValue> skuAttrValueList) {
+        this.skuAttrValueList = skuAttrValueList;
+    }
+
+    public List<SkuSaleAttrValue> getSkuSaleAttrValueList() {
+        return skuSaleAttrValueList;
+    }
+
+    public void setSkuSaleAttrValueList(List<SkuSaleAttrValue> skuSaleAttrValueList) {
+        this.skuSaleAttrValueList = skuSaleAttrValueList;
+    }
+
+    @Override
+    public String toString() {
+        return "SkuInfo{" +
+                "id=" + id +
+                ", spuId=" + spuId +
+                ", price=" + price +
+                ", skuName='" + skuName + '\'' +
+                ", skuDesc='" + skuDesc + '\'' +
+                ", weight=" + weight +
+                ", tmId=" + tmId +
+                ", catalog3Id=" + catalog3Id +
+                ", skuDefaultImg='" + skuDefaultImg + '\'' +
+                ", skuImageList=" + skuImageList +
+                ", skuAttrValueList=" + skuAttrValueList +
+                ", skuSaleAttrValueList=" + skuSaleAttrValueList +
+                '}';
     }
 }

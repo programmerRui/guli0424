@@ -296,16 +296,18 @@
                 success: function (data) {
                     // 初始化销售属性列表
                     if(data){
-                        console.log(data);
-                        $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
+                        console.log("data:"+data);
+
                         for(var i=0;i<data.spuSaleAttr.length;i++) {
+                            $("#spuSaleAttrValueDg").datagrid('loadData', { total: 0, rows: [] });//行号初始化
                             for(var j=0;j<data.spuSaleAttr[i].spuSaleAttrValueList.length;j++){
                                 $("#spuSaleAttrValueDg").datagrid("appendRow",{
                                     id:data.spuSaleAttr[i].spuSaleAttrValueList[j].id,
                                     saleAttrValueName:data.spuSaleAttr[i].spuSaleAttrValueList[j].saleAttrValueName
                                 });
-                                var spuSaleAttrValueJson = $("#spuSaleAttrValueDg").datagrid("getData");
                             }
+                            var spuSaleAttrValueJson = $("#spuSaleAttrValueDg").datagrid("getData");
+                            console.log("spuSaleAttrValueJson:"+spuSaleAttrValueJson);
                             $("#spuSaleAttrDg").datagrid('appendRow', {
                                 id: data.spuSaleAttr[i].id,
                                 saleAttrId: data.spuSaleAttr[i].saleAttrId,
