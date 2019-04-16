@@ -10,4 +10,6 @@ public interface SkuService {
     void saveSku(SkuInfo skuInfo);
 
     void updateSku(SkuInfo skuInfo);
+
+    SkuInfo selectOne(Long skuId);
 }

@@ -6,6 +6,7 @@ import com.neusoft.bean.po.SpuInfo;
 import com.neusoft.bean.po.SpuSaleAttr;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SpuService {
     List<SpuSaleAttr> getSaleAttrListBySpuId(Long spuId);
@@ -27,4 +28,6 @@ public interface SpuService {
     void updataSpu(SpuInfo spuInfo);
 
     List<SpuImage> getSpuImageListBySpuId(Long spuId);
+
+    List<SpuSaleAttr> selectSpuSaleAttrListCheckBySku(Map<String, Long> stringStringHashMap);
 }

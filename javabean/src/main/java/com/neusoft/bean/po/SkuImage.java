@@ -41,7 +41,7 @@ public class SkuImage  implements Serializable {
      * 是否默认
      */
     @Column(name = "is_default")
-    private String isDefault="0";
+    private String isDefault;
 
     /**
      * 获取编号

@@ -63,11 +63,11 @@
         // 获得选中的行对象
         var skuInfo = $("#skulist_dg").datagrid("getSelected");
         var spuId=skuInfo.spuId;
-        $("#skuId").textbox("setText",skuInfo.id);
-        $("#skuName").textbox("setText",skuInfo.skuName);
-        $("#price").textbox("setText",skuInfo.price);
-        $("#weight").textbox("setText",skuInfo.weight);
-        $("#skuDesc").textbox("setText",skuInfo.skuDesc);
+        $("#skuId").textbox("setValue",skuInfo.id);
+        $("#skuName").textbox("setValue",skuInfo.skuName);
+        $("#price").textbox("setValue",skuInfo.price);
+        $("#weight").textbox("setValue",skuInfo.weight);
+        $("#skuDesc").textbox("setValue",skuInfo.skuDesc);
         // 初始化对话框
         initSkuInfoDlg(spuId);
     }

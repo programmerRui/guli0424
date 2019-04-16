@@ -91,10 +91,26 @@ public class SkuServiceImpl implements SkuService {
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
         for (SkuSaleAttrValue saleAttrValue : skuSaleAttrValueList) {
             saleAttrValue.setSkuId(skuInfoId);
-            skuSaleAttrValueMapper.insert(skuSaleAttrValue);
+            skuSaleAttrValueMapper.insert(saleAttrValue);
         }
     }
 
+    @Override
+    public SkuInfo selectOne(Long skuId) {
+        SkuInfo skuInfo = new SkuInfo();
+        skuInfo.setId(skuId);
+        SkuInfo selectOne = skuInfoMapper.selectOne(skuInfo);
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuId);
+        List<SkuImage> skuImages = skuImageMapper.select(skuImage);
+        selectOne.setSkuImageList(skuImages);
+        //spu带的销售属性
+        SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
+        skuSaleAttrValue.setSkuId(skuId);
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.select(skuSaleAttrValue);
+        selectOne.setSkuSaleAttrValueList(skuSaleAttrValueList);
+        return selectOne;
+    }
 
 
 }

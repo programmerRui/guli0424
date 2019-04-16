@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+1231231233213
+<div th:text="${hello}" >默认内容</div>
+<!--循环-->
+<div th:each="users:${userInfoLists}" >
+    <div th:text="${users.id}"></div>
+    <div th:text="${users.name}"></div>
+    <div th:text="${users.nickName}"></div>
+</div>
+<!--判断-->
+<div th:if="${hello=='hello thymeleaf'}">条件相等</div>
+<div th:text="(${hello=='hello'})?'yes':'no'">条件相等</div>
+<!--引入页面-->
+<div th:include="test"></div>
+<div th:include="test::inner"></div>
+<!--js函数-->
+<a th:href="'javascript:abc(\''+${hello}+'\')'">点一下玩一年</a>
+<script language="JavaScript">
+    function abc(hello) {
+        alert(hello+"节能");
+    }
+</script>
+</body>
+</html>

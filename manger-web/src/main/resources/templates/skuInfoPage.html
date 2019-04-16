@@ -9,7 +9,7 @@
      closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:false" buttons="#skuBtns" >
     <form id="skuForm">
         <br/>
-        <label>sku名称:</label>
+        <label>skuId:</label>
         <input  id="skuId" name="skuId" class="easyui-textbox" data-options="" style="width:300px;"/>
         <br/><br/>
         <label>sku名称:</label>
@@ -106,7 +106,7 @@
             var append = "";
             $(data).each(function(i,saleAttr){
 
-                spanHead = "<span saleAttrId = '"+saleAttr.id+"' saleAttrName = '"+saleAttr.saleAttrName+"'>";
+                spanHead = "<span saleAttrId = '"+saleAttr.saleAttrId+"' saleAttrName = '"+saleAttr.saleAttrName+"'>";
                 saleAttrName = saleAttr.saleAttrName;
                 var spuSaleAttrValueList = saleAttr.spuSaleAttrValueList;
 
@@ -150,7 +150,7 @@
     function saveSku() {
 
         var skuInfo = {};
-        spuInfo["id"] = $("#skuId").textbox("getValue");
+        skuInfo["id"] = $("#skuId").textbox("getValue");
         skuInfo["spuId"] = $("#spuIdForSku").val();
         skuInfo["catalog3Id"] = $("#ctg3ForSpuList").combobox("getValue");
         skuInfo["skuDesc"] =$("#skuDesc").textbox("getValue");

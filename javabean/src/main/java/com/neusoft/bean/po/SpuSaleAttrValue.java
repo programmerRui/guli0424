@@ -3,7 +3,9 @@ package com.neusoft.bean.po;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
 
 @Table(name = "spu_sale_attr_value")
 public class SpuSaleAttrValue  implements Serializable {
@@ -31,6 +33,8 @@ public class SpuSaleAttrValue  implements Serializable {
     @Column(name = "sale_attr_value_name")
     private String saleAttrValueName;
 
+    @Transient
+    private String isChecked;
     /**
      * 获取销售属性值编号
      *
@@ -101,6 +105,14 @@ public class SpuSaleAttrValue  implements Serializable {
      */
     public void setSaleAttrValueName(String saleAttrValueName) {
         this.saleAttrValueName = saleAttrValueName == null ? null : saleAttrValueName.trim();
+    }
+
+    public String getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(String isChecked) {
+        this.isChecked = isChecked;
     }
 
     @Override

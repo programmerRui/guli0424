@@ -122,9 +122,9 @@
             // 初始化上传控件插件(webuploader)
             initUploader();
             if(spuInfo){
-                $("#spuName").textbox("setText",spuInfo.spuName);
-                $("#description").textbox("setText",spuInfo.description);
-                $("#spuId").textbox("setText",spuInfo.id);
+                $("#spuName").textbox("setValue",spuInfo.spuName);
+                $("#description").textbox("setValue",spuInfo.description);
+                $("#spuId").textbox("setValue",spuInfo.id);
                 var spuId=spuInfo.id;
                 $.ajax({
                     url: "selectImage",
