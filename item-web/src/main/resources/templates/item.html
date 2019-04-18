@@ -10,7 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 	</head>
 	<body>
-	<input id="skuJson" type="text" th:value="${skuJson}"/>
+	<input id="skuJson" type="text" th:value="${skuJson}" hidden="hidden"/>
 		<div id="max">
 		<header>
 
@@ -1039,13 +1039,13 @@
 		 // 对比key，查看是否存在skuId
 
             var skuId = skuJson[key];
-
             if(skuId){
-                window.location.href = "/"+skuId+".html";
+                window.location.href = "http://item-web:8082/"+skuId+".html";
 			}else{
 				$("#cartBtn").attr("class","box-btns-two-off");
-                $("#cartBtn").disable();
-			}
+               /* $("#cartBtn").attr("disabled","true");*/
+                $("#cartBtn").removeAttr("onclick");
+            }
         }
 	</script>
 

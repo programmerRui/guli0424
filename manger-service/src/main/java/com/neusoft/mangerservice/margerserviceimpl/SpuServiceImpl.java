@@ -25,7 +25,7 @@ public class SpuServiceImpl implements SpuService {
     SpuImageMapper spuImageMapper;
 
     @Override
-    public List<SpuSaleAttr> getSaleAttrListBySpuId(Long spuId) {
+    public List<SpuSaleAttr> getSaleAttrListBySpuId(Long spuId){
         SpuSaleAttr spuSaleAttr = new SpuSaleAttr();
         spuSaleAttr.setSpuId(spuId);
         List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.select(spuSaleAttr);
@@ -150,7 +150,7 @@ public class SpuServiceImpl implements SpuService {
 
     //查询销售属性
     @Override
-    public List<SpuSaleAttr> getSpuSaleAttr(Long spuId) {
+    public List<SpuSaleAttr> getSpuSaleAttr(Long spuId){
         SpuSaleAttr spuSaleAttr = new SpuSaleAttr();
         spuSaleAttr.setSpuId(spuId);
         List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.select(spuSaleAttr);
@@ -175,6 +175,11 @@ public class SpuServiceImpl implements SpuService {
     @Override
     public List<SpuSaleAttr> selectSpuSaleAttrListCheckBySku(Map<String, Long> stringStringHashMap) {
         return spuSaleAttrValueMapper.selectSpuSaleAttrListCheckBySku(stringStringHashMap);
+    }
+
+    @Override
+    public List<SkuInfo> selectSkuSaleAttrValueListBySpu(Long spuId) {
+        return spuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(spuId);
     }
 
 

@@ -1,12 +1,12 @@
 package com.neusoft.itemweb.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.neusoft.bean.po.SkuInfo;
-import com.neusoft.bean.po.SkuSaleAttrValue;
-import com.neusoft.bean.po.SpuSaleAttr;
-import com.neusoft.bean.po.UserInfo;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.SkuService;
 import com.neusoft.interfaces.SpuService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +32,20 @@ public class ItemController {
         //List<SpuSaleAttr> saleAttrListBySpuId = spuService.getSaleAttrListBySpuId(spuId);
         //当前sku的销售属性
        //List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
+        List<SkuInfo> infos=spuService.selectSkuSaleAttrValueListBySpu(spuId);
+        HashMap<String, Long> hashMap = new HashMap<>();
+        for (SkuInfo info : infos) {
+            Long v = info.getId();
+            List<SkuSaleAttrValue> skuSaleAttrValueList = info.getSkuSaleAttrValueList();
+            String k="";
+            for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
+                k+="|"+skuSaleAttrValue.getSaleAttrValueId();
+            }
+            hashMap.put(k,v);
+        }
+        String jsonString = JSON.toJSONString(hashMap);
+        map.put("skuJson",jsonString);
+        //销售属性列表
         Map<String,Long>  stringStringHashMap= new HashMap<>();
         stringStringHashMap.put("spuId",spuId);
         stringStringHashMap.put("skuId",skuId);

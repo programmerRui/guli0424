@@ -84,6 +84,11 @@
         initSpuInfoDlg(spuInfo);
     }
     function addSkuInfo() {
+        $("#skuId").textbox("setValue",null);
+        $("#skuName").textbox("setValue",null);
+        $("#price").textbox("setValue",null);
+        $("#weight").textbox("setValue",null);
+        $("#skuDesc").textbox("setValue",null);
         // 打开sku添加的对话框
         $("#sku_dlg").dialog("open");
         var spuInfo = $("#spulist_dg").datagrid("getSelected");

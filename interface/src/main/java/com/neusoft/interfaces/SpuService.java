@@ -1,9 +1,7 @@
 package com.neusoft.interfaces;
 
-import com.neusoft.bean.po.BaseSaleAttr;
-import com.neusoft.bean.po.SpuImage;
-import com.neusoft.bean.po.SpuInfo;
-import com.neusoft.bean.po.SpuSaleAttr;
+import com.neusoft.bean.po.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +28,6 @@ public interface SpuService {
     List<SpuImage> getSpuImageListBySpuId(Long spuId);
 
     List<SpuSaleAttr> selectSpuSaleAttrListCheckBySku(Map<String, Long> stringStringHashMap);
+
+    List<SkuInfo> selectSkuSaleAttrValueListBySpu(@Param("spuId") Long spuId);
 }
