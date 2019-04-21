@@ -50,6 +50,7 @@ public class CartInfo  implements Serializable {
     @Column(name = "sku_name")
     private String skuName;
 
+    private String isChecked;
     /**
      * 获取编号
      *
@@ -174,5 +175,13 @@ public class CartInfo  implements Serializable {
      */
     public void setSkuName(String skuName) {
         this.skuName = skuName == null ? null : skuName.trim();
+    }
+
+    public String getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(String isChecked) {
+        this.isChecked = isChecked;
     }
 }
