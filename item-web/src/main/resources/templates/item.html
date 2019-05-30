@@ -58,8 +58,8 @@
 							</li>
 						</ul>
 						<ul class="header_ul_right">
-							<li style="border: 0;"><a href="../登录页面\index.html" class="aa">你好，请登录</a></li>
-							<li><a href="../注册页面\index.html" style="color: red;">免费注册</a> |</li>
+							<li th:if="(${nickName!=null})" th:text="你好+'，'" style="color: red;"><li th:text="${nickName}" style="color: red;"></li></li>
+							<li th:if="(${nickName==null})" style="color: red;"><a href="http://passport.gmall.com:8085/index" style="color: red;">你好,先请登录</a> </li>
 							<li><a href="javascript:;" class="aa">我的订单</a> |</li>
  
 						</ul>
@@ -263,18 +263,18 @@
 						<div class="box-btns clear">
 							<div class="box-btns-one">
 								<form id="itemForm" action="http://cart.gmall.com:8084/addToCart" method="post">
-									<input type="text" name="skuNum" id=""  value="1"/>
+									<input type="text" name="skuNum" id="skuNum"  value="1"/>
 									<input type="hidden" name="skuId"  th:value="${skuInfo?.id}" />
 
 									<div class="box-btns-one1">
 
 										<div>
-											<button type="button" id="jia">
+											<button type="button" id="jia" onclick="jiaskuNum()">
 												+
 											</button>
 										</div>
 										<div>
-											<button type="button" id="jian">
+											<button type="button" id="jian" onclick="jianskuNum()">
 												-
 											</button>
 										</div>
@@ -1046,6 +1046,18 @@
                /* $("#cartBtn").attr("disabled","true");*/
                 $("#cartBtn").removeAttr("onclick");
             }
+        }
+        function jiaskuNum() {
+			var i=$("#skuNum").val();
+			i++;
+            $("#skuNum").val(i);
+        }
+        function jianskuNum() {
+            var i=$("#skuNum").val();
+            if(i>1){
+                i--;
+			}
+            $("#skuNum").val(i);
         }
 	</script>
 

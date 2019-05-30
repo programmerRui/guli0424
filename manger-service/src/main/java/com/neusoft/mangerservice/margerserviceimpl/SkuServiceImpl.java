@@ -53,15 +53,21 @@ public class SkuServiceImpl implements SkuService {
             skuAttrValueMapper.insert(skuAttrValue);
         }
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
-        for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
-            skuSaleAttrValue.setSkuId(maxId);
-            skuSaleAttrValueMapper.insert(skuSaleAttrValue);
+        if(skuSaleAttrValueList!=null){
+            for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
+                skuSaleAttrValue.setSkuId(maxId);
+                skuSaleAttrValueMapper.insert(skuSaleAttrValue);
+            }
         }
+
         List<SkuImage> skuImageList = skuInfo.getSkuImageList();
-        for (SkuImage skuImage : skuImageList) {
-            skuImage.setSkuId(maxId);
-            skuImageMapper.insert(skuImage);
+        if(skuImageList!=null){
+            for (SkuImage skuImage : skuImageList) {
+                skuImage.setSkuId(maxId);
+                skuImageMapper.insert(skuImage);
+            }
         }
+
 
     }
     //修改sku
@@ -182,6 +188,25 @@ public class SkuServiceImpl implements SkuService {
 //            jedis.set(key, JSON.toJSONString(skuInfo));
 //        }
 //        return skuInfo;
+    }
+
+    @Override
+    public List<SkuInfo> getSkuListByCatalog3Id(String catalog3Id) {
+        SkuInfo skuInfo = new SkuInfo();
+        skuInfo.setCatalog3Id(Long.parseLong(catalog3Id));
+        List<SkuInfo> select = skuInfoMapper.select(skuInfo);
+
+        for (SkuInfo info : select) {
+            String id = info.getId().toString();
+
+            SkuAttrValue skuAttrValue = new SkuAttrValue();
+            skuAttrValue.setSkuId(Long.parseLong(id));
+            List<SkuAttrValue> select1 = skuAttrValueMapper.select(skuAttrValue);
+
+            info.setSkuAttrValueList(select1);
+        }
+
+        return select;
     }
 
     private SkuInfo getSkuByIdFormDb(Long skuId) {

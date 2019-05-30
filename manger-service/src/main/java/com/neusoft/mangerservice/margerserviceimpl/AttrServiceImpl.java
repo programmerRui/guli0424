@@ -4,10 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.neusoft.bean.po.*;
 import com.neusoft.interfaces.AttrService;
 import com.neusoft.mangerservice.dao.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -61,9 +63,11 @@ public class AttrServiceImpl implements AttrService {
             baseAttrInfoMapper.insertSelective(baseAttrInfo);
         }
         //把原属性值全部清空
-        BaseAttrValue baseAttrValueDel = new BaseAttrValue();
-        baseAttrValueDel.setAttrId(baseAttrInfo.getId());
-        baseAttrValueMapper.delete(baseAttrValueDel);
+        if(baseAttrInfo.getId()!=null){
+            BaseAttrValue baseAttrValueDel = new BaseAttrValue();
+            baseAttrValueDel.setAttrId(baseAttrInfo.getId());
+            baseAttrValueMapper.delete(baseAttrValueDel);
+        }
         //重新插入属性
         if(baseAttrInfo.getAttrValueList()!=null&&baseAttrInfo.getAttrValueList().size()>0){
             for (BaseAttrValue attrValue : baseAttrInfo.getAttrValueList()) {
@@ -114,6 +118,20 @@ public class AttrServiceImpl implements AttrService {
             attrInfo.setAttrValueList(baseAttrValueList);
         }
         return baseAttrInfoList;
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrListByValueIds(Set<String> valueIds) {
+        if(valueIds!=null&&valueIds.size()>0){
+            String join = StringUtils.join(valueIds, ",");
+
+            List<BaseAttrInfo> baseAttrInfos = baseAttrValueMapper.selectAttrListByValueIds(join);
+
+            return baseAttrInfos;
+        }else{
+            return null;
+        }
+
     }
 
 

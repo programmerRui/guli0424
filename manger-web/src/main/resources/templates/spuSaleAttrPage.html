@@ -37,6 +37,10 @@
     </div>
     
     <script language="JavaScript">
+        function closeSpuSaleAttr() {
+            // 关闭spu销售属性对话框
+            $("#spuSaleAttr_dlg").dialog("close");
+        }
         function saveSpuSaleAttr() {
             // 获得销售属性值列表的数据(json)
             var data = $("#spuSaleAttrValueDg").datagrid("getData");
@@ -49,13 +53,19 @@
             });
             // 关闭spu销售属性对话框
             $("#spuSaleAttr_dlg").dialog("close");
+            // 获得选中的行对象
+            var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("getSelected");
+            // 获得行号
+            var rowNum = $("#spuSaleAttrDg").datagrid("getRowIndex",spuSaleAttrDg);
+            // 根据行号删除
+            $("#spuSaleAttrDg").datagrid("deleteRow",rowNum);
         }
         
         function initSpuSaleAttrDlg(spuSaleAttrDg) {
             if(spuSaleAttrDg){
                 //回显销售属性
                 $("#saleAttrSelect").combobox("setValue",spuSaleAttrDg.saleAttrId);
-                $("#saleAttrSelect").combobox("setValue",spuSaleAttrDg.saleAttrName);
+                $("#saleAttrSelect").combobox("getText",spuSaleAttrDg.saleAttrName);
             }
             // 初始化销售属性的combobox
             initSpuSaleAttrValueListDatagrid(spuSaleAttrDg);

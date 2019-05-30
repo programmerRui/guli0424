@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.neusoft</groupId>
-            <artifactId>web-util</artifactId>
+            <artifactId>utils</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--分布式客户端-->

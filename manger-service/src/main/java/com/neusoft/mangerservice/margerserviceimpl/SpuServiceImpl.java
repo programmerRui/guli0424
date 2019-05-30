@@ -101,16 +101,21 @@ public class SpuServiceImpl implements SpuService {
         }
         //重新插入销售属性
         List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
-        for (SpuSaleAttr saleAttr : spuSaleAttrList) {
-            saleAttr.setSpuId(spuInfoId);
-            spuSaleAttrMapper.insertSelective(saleAttr);
-            //重新插入销售属性值
-            List<SpuSaleAttrValue> spuSaleAttrValueList = saleAttr.getSpuSaleAttrValueList();
-            for (SpuSaleAttrValue saleAttrValue : spuSaleAttrValueList) {
-                saleAttrValue.setSpuId(spuInfoId);
-                spuSaleAttrValueMapper.insertSelective(saleAttrValue);
+        if(spuSaleAttrList!=null){
+            for (SpuSaleAttr saleAttr : spuSaleAttrList) {
+                saleAttr.setSpuId(spuInfoId);
+                spuSaleAttrMapper.insertSelective(saleAttr);
+                //重新插入销售属性值
+                List<SpuSaleAttrValue> spuSaleAttrValueList = saleAttr.getSpuSaleAttrValueList();
+                if(spuSaleAttrValueList!=null){
+                    for (SpuSaleAttrValue saleAttrValue : spuSaleAttrValueList) {
+                        saleAttrValue.setSpuId(spuInfoId);
+                        spuSaleAttrValueMapper.insertSelective(saleAttrValue);
+                    }
+                }
             }
         }
+
     }
 
     @Override

@@ -26,6 +26,8 @@ public class CartInfo  implements Serializable {
     @Column(name = "sku_id")
     private Long skuId;
 
+    @Column(name = "sku_Price")
+    private BigDecimal skuPrice;
     /**
      * 放入购物车时价格
      */
@@ -183,5 +185,13 @@ public class CartInfo  implements Serializable {
 
     public void setIsChecked(String isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public BigDecimal getSkuPrice() {
+        return skuPrice;
+    }
+
+    public void setSkuPrice(BigDecimal skuPrice) {
+        this.skuPrice = skuPrice;
     }
 }

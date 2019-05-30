@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,8 @@ public class ItemController {
     @Reference
     SpuService spuService;
     @RequestMapping("{skuId}.html")
-    public String show(@PathVariable Long skuId,ModelMap map){
+    public String show(HttpServletRequest request, @PathVariable Long skuId, ModelMap map){
+        String nickName=(String) request.getAttribute("nickName");
         SkuInfo skuInfo=skuService.selectOne(skuId);
         map.put("skuInfo",skuInfo);
         Long spuId = skuInfo.getSpuId();
@@ -51,6 +53,7 @@ public class ItemController {
         stringStringHashMap.put("skuId",skuId);
         List<SpuSaleAttr> saleAttrListBySpuId = spuService.selectSpuSaleAttrListCheckBySku(stringStringHashMap);
         map.put("spuSaleAttrListCheckBySku",saleAttrListBySpuId);
+        map.put("nickName",nickName);
         return "item";
     }
     @RequestMapping("index.do")

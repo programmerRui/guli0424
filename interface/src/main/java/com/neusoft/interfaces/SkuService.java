@@ -12,4 +12,6 @@ public interface SkuService {
     void updateSku(SkuInfo skuInfo);
 
     SkuInfo selectOne(Long skuId);
+
+    List<SkuInfo> getSkuListByCatalog3Id(String s);
 }

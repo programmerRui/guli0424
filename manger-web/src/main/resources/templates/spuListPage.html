@@ -59,6 +59,7 @@
 
 <script language="JavaScript">
     function cleartable() {
+        $("#spuId").textbox("setText",null);
         $("#spuName").textbox("setText",null);
         $("#description").textbox("setText",null);
         $("#spuImgDg").datagrid("loadData", { total: 0, rows: [] });

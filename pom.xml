@@ -9,7 +9,7 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>common-util</module>
-    <module>web-util</module>
+    <module>utils</module>
     <module>mybaticgenerator</module>
     <module>interface</module>
     <module>javabean</module>
@@ -216,6 +216,11 @@
         <artifactId>jjwt</artifactId>
         <version>0.9.0</version>
       </dependency>
+    <!--  <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        &lt;!&ndash;<version>4.5.5</version>&ndash;&gt;
+      </dependency>-->
 
     </dependencies>
   </dependencyManagement>

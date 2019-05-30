@@ -3,6 +3,7 @@ package com.neusoft.interfaces;
 import com.neusoft.bean.po.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface AttrService {
@@ -22,4 +23,6 @@ public interface AttrService {
     List<BaseAttrValue> selectAttrValue(String attrId);
 
     List<BaseAttrInfo> getAttrListByCtg3Id(Long catalog3Id);
+
+    List<BaseAttrInfo> getAttrListByValueIds(Set<String> valueIds);
 }

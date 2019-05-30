@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Table(name = "order_detail")
 public class OrderDetail  implements Serializable {
@@ -41,7 +42,7 @@ public class OrderDetail  implements Serializable {
      * 购买价格(下单时sku价格）
      */
     @Column(name = "order_price")
-    private Long orderPrice;
+    private BigDecimal orderPrice;
 
     /**
      * 购买个数
@@ -139,21 +140,11 @@ public class OrderDetail  implements Serializable {
         this.imgUrl = imgUrl == null ? null : imgUrl.trim();
     }
 
-    /**
-     * 获取购买价格(下单时sku价格）
-     *
-     * @return order_price - 购买价格(下单时sku价格）
-     */
-    public Long getOrderPrice() {
+    public BigDecimal getOrderPrice() {
         return orderPrice;
     }
 
-    /**
-     * 设置购买价格(下单时sku价格）
-     *
-     * @param orderPrice 购买价格(下单时sku价格）
-     */
-    public void setOrderPrice(Long orderPrice) {
+    public void setOrderPrice(BigDecimal orderPrice) {
         this.orderPrice = orderPrice;
     }
 
